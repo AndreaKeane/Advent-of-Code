@@ -31,12 +31,27 @@ def get_color_number(color_str):
     return color, count
 
 
+def maximum(a, b):
+     
+    if a >= b:
+        return a
+    else:
+        return b
+
+
 def main(list_of_games): 
 
-    invalid_round_sum = 0
+    valid_round_sum = 0
+    sum_of_powers = 0
 
     for game in list_of_games:
         possible_game = True
+        min_cubes = {
+            "red": 0, 
+            "blue": 0, 
+            "green": 0
+        }
+
         game_id_str, results = game.split(":", 1)
         game_id_int = parse_game_id(game_id_str)
         
@@ -49,12 +64,18 @@ def main(list_of_games):
                 color, count = get_color_number(sep)
                 if (count > bag_max[color]): 
                     possible_game = False
+                
+                min_cubes[color] = maximum(min_cubes[color], count)
         
+        power = min_cubes["red"] * min_cubes["green"] * min_cubes["blue"] 
+        print(power, min_cubes)
+        sum_of_powers += power
+
         if possible_game: 
-            invalid_round_sum += game_id_int
+            valid_round_sum += game_id_int
 
-
-    print(f"Answer: {invalid_round_sum}")
+    print(f"Answer Pt1: {valid_round_sum}")
+    print(f"Answer Pt2: {sum_of_powers}")
 
 
 if __name__ == "__main__":
