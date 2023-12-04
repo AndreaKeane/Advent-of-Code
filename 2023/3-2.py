@@ -13,6 +13,11 @@ test_input = [
     ".664.598..",
 ]
 
+class Number: 
+    number_str = ""
+    adjacent_to_special_chars = False
+
+
 def is_symbol(char):
     
     if char == "." or char.isdigit():
@@ -43,35 +48,29 @@ def check_adjacent_chars(raw_matrix, x, y):
     return False
 
 
+def number_reset(final_sum, number):
+    if number.number_str: 
+        # print(f"{number} - {adjacent_to_special_chars} - {final_sum}")
+        if number.adjacent_to_special_chars: 
+            final_sum += int(number.number_str)
+    return final_sum, Number()
+
+
 def main(raw_matrix):
 
     final_sum = 0
+    number = Number()
 
     for idx_row, line in enumerate(raw_matrix): 
-        
-        number = ""
-        adjacent_to_special_chars = False
         for idx_col, char in enumerate(line): 
-            if char.isdigit(): 
-                number = f"{number}{char}"
-                # Check for neighboring special characters
-                if not adjacent_to_special_chars: 
-                    adjacent_to_special_chars = check_adjacent_chars(raw_matrix, idx_col, idx_row)
-
+            if char.isdigit():
+                number.number_str += str(char)
+                if not number.adjacent_to_special_chars: 
+                    number.adjacent_to_special_chars = check_adjacent_chars(raw_matrix, idx_col, idx_row)
             else: # Sum up results and then reset variables 
-                if number: 
-                    # print(f"{number} - {adjacent_to_special_chars} - {final_sum}")
-                    if adjacent_to_special_chars: 
-                        final_sum += int(number)
-                number = ""
-                adjacent_to_special_chars = False
-        
-        if number: 
-            # print(f"{number} - {adjacent_to_special_chars} - {final_sum}")
-            if adjacent_to_special_chars: 
-                final_sum += int(number)
-            number = ""
-            adjacent_to_special_chars = False
+                final_sum, number = number_reset(final_sum, number)
+
+        final_sum, number = number_reset(final_sum, number)
     
     print("Part 1 Answer: ", final_sum)
 
