@@ -90,7 +90,7 @@ def get_destination_value(transition_map, source_id):
     return source_id
 
 
-def main(input): 
+def main1(input): 
     maps = parse_maps(input)
     print(maps.keys())
     seeds = maps["seeds"]
@@ -99,7 +99,16 @@ def main(input):
         location_id = get_seed_story(maps, seed)
         min_location_id = min(min_location_id, location_id)
     print(f"Part 1 Answer: {min_location_id}")
+
+
+def main2(input): 
+    maps = parse_maps(input)
+    m = maps["humidity-to-location"]
+    for line in m: 
+        min_line = line if line["dest_range_start"] == 0 else None
     
+    print(min_line)
+
 
 if __name__ == "__main__":
 
@@ -108,4 +117,5 @@ if __name__ == "__main__":
         for row in input_file:
             input.append(row)
 
-    main(input)
+    # main1(test_input)
+    main2(test_input)
